@@ -11,16 +11,7 @@
 .Carousel__list {
   display: flex;
   padding: 0;
-  width: 1300px;
   list-style: none;
-}
-
-.Carousel__list li {
-  margin-right: 10px;
-}
-
-.Carousel__list li:last-child {
-  margin-right: 0;
 }
 
 .buttons {

@@ -23,13 +23,16 @@ const Carousel: React.FC<CaoruseImages> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemWidthWithGap = itemWidth + gap;
   const transformValue = -currentIndex * itemWidthWithGap;
+  const track = images.length * itemWidthWithGap;
+  const maxStartIndex = Math.max(0, images.length - frameSize);
 
   return (
     <div className="Carousel">
-      <div className="Carousel__container">
+      <div className="Carousel__container" style={{ width: `${track}` }}>
         <ul
           style={{
-            width: `${itemWidthWithGap * frameSize - gap}px`,
+            width: `${itemWidthWithGap * frameSize}px`,
+            gap: `${gap}px`,
             transform: `translateX(${transformValue}px)`,
             transition: `transform ${animationDuration}ms ease`,
           }}
@@ -50,14 +53,10 @@ const Carousel: React.FC<CaoruseImages> = ({
 
       <div className="buttons">
         <button
-          data-cy="next"
+          data-cy="prev"
           onClick={() => {
             setCurrentIndex(c => {
-              if (c === 0) {
-                return infinite ? images.length - step : 0;
-              }
-
-              return c - step;
+              return Math.min(maxStartIndex, c - step);
             });
           }}
           disabled={!infinite && currentIndex === 0}
@@ -67,13 +66,10 @@ const Carousel: React.FC<CaoruseImages> = ({
           &#x25C0;
         </button>
         <button
+          data-cy="next"
           onClick={() => {
             setCurrentIndex(c => {
-              if (c >= images.length - step) {
-                return infinite ? 0 : images.length - step;
-              }
-
-              return c + step;
+              return Math.min(maxStartIndex, c + step);
             });
           }}
           disabled={!infinite && currentIndex === images.length - step}
