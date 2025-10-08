@@ -62,7 +62,7 @@ const Carousel: React.FC<CaoruselProps> = ({
           <button
             onClick={() => {
               if (infinite && currentIndex === 0) {
-                setCurrentIndex(images.length - step);
+                setCurrentIndex(maxStartIndex);
 
                 return;
               }
@@ -78,7 +78,7 @@ const Carousel: React.FC<CaoruselProps> = ({
           <button
             data-cy="next"
             onClick={() => {
-              if (infinite && currentIndex === images.length - step) {
+              if (infinite && currentIndex === maxStartIndex) {
                 setCurrentIndex(0);
 
                 return;

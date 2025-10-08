@@ -63,7 +63,9 @@ class App extends React.Component<{}, State> {
             type="number"
             placeholder="Animation duration"
           />
+          <label htmlFor="input-check">Infinite</label>
           <input
+            id="input-check"
             defaultChecked={this.state.infinite}
             type="checkbox"
             onChange={() => this.setState({ infinite: !this.state.infinite })}
