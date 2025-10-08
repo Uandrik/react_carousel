@@ -14,6 +14,7 @@ interface CaoruselProps {
 const Carousel: React.FC<CaoruselProps> = ({
   images,
   gap,
+  step,
   itemWidth,
   frameSize,
   animationDuration,
@@ -21,55 +22,23 @@ const Carousel: React.FC<CaoruselProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [initialItemWidth, setInitialItemWidth] = useState(itemWidth);
-  const [initialFrameSize, setInitialFrameSize] = useState(frameSize);
-  const [initialStep, setInitialStep] = useState(3);
-  const [initialAnimationDuration, setInitialAnimationDuration] =
-    useState(animationDuration);
-
-  const itemWidthWithGap = initialItemWidth + gap;
+  const itemWidthWithGap = itemWidth + gap;
   const transformValue = -currentIndex * itemWidthWithGap;
-  const maxStartIndex = Math.max(0, images.length - initialFrameSize);
-
-  console.log(currentIndex, initialStep, images.length - initialStep);
+  const maxStartIndex = Math.max(0, images.length - frameSize);
 
   return (
     <>
-      <div className="inputs__container">
-        <input
-          onChange={event => setInitialItemWidth(Number(event.target.value))}
-          type="number"
-          placeholder="Width"
-        />
-        <input
-          onChange={event => setInitialFrameSize(Number(event.target.value))}
-          type="number"
-          placeholder="Frame size"
-        />
-        <input
-          onChange={event => setInitialStep(Number(event.target.value))}
-          type="number"
-          placeholder="Step"
-        />
-        <input
-          onChange={event =>
-            setInitialAnimationDuration(Number(event.target.value))
-          }
-          type="number"
-          placeholder="Animation duration"
-        />
-      </div>
-
       <div className="Carousel">
         <div
           className="Carousel__container"
-          style={{ width: `${initialFrameSize * itemWidthWithGap}px` }}
+          style={{ width: `${frameSize * itemWidthWithGap}px` }}
         >
           <ul
             style={{
+              width: `${images.length * itemWidthWithGap}`,
               gap: `${gap}px`,
               transform: `translateX(${transformValue}px)`,
-              transition: `transform ${initialAnimationDuration}ms ease`,
+              transition: `transform ${animationDuration}ms ease`,
             }}
             className="Carousel__list"
           >
@@ -78,8 +47,8 @@ const Carousel: React.FC<CaoruselProps> = ({
                 <img
                   className="list__img"
                   style={{
-                    width: `${initialItemWidth}px`,
-                    height: `${initialItemWidth}px`,
+                    width: `${itemWidth}px`,
+                    height: `${itemWidth}px`,
                   }}
                   src={i}
                   alt={`${index}`}
@@ -93,12 +62,12 @@ const Carousel: React.FC<CaoruselProps> = ({
           <button
             onClick={() => {
               if (infinite && currentIndex === 0) {
-                setCurrentIndex(images.length - initialStep);
+                setCurrentIndex(images.length - step);
 
                 return;
               }
 
-              setCurrentIndex(c => Math.max(0, c - initialStep));
+              setCurrentIndex(c => Math.max(0, c - step));
             }}
             disabled={!infinite && currentIndex === 0}
             className="button"
@@ -109,13 +78,13 @@ const Carousel: React.FC<CaoruselProps> = ({
           <button
             data-cy="next"
             onClick={() => {
-              if (infinite && currentIndex === images.length - initialStep) {
+              if (infinite && currentIndex === images.length - step) {
                 setCurrentIndex(0);
 
                 return;
               }
 
-              setCurrentIndex(c => Math.min(maxStartIndex, c + initialStep));
+              setCurrentIndex(c => Math.min(maxStartIndex, c + step));
             }}
             disabled={!infinite && currentIndex === maxStartIndex}
             className="button"
